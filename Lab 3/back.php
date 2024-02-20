@@ -6,8 +6,11 @@
     <title>Document</title>
 </head>
 <body>
+    <fieldset>
         <?php
-            echo "<h1>Hello PHP!</h1>";
+            print_r(get_headers('https://example.com'));
         ?>
+    </fieldset>
+    <a href="index.html">hflsfsl</a>
 </body>
 </html>
