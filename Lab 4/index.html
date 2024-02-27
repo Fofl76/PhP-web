@@ -1,51 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Калькулятор</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-    <input type="text" id="inputField" readonly><br>
-    <button onclick="clearInput()">C</button><br>
-    <button onclick="addToInput('7')">7</button>
-    <button onclick="addToInput('8')">8</button>
-    <button onclick="addToInput('9')">9</button><br>
-    <button onclick="addToInput('4')">4</button>
-    <button onclick="addToInput('5')">5</button>
-    <button onclick="addToInput('6')">6</button><br>
-    <button onclick="addToInput('1')">1</button>
-    <button onclick="addToInput('2')">2</button>
-    <button onclick="addToInput('3')">3</button><br>
-    <button onclick="addToInput('0')">0</button><br>
-    <button onclick="addToInput('(')"> ( </button>
-    <button onclick="addToInput(')')"> ) </button>
-    <button onclick="addToInput('+')">+</button>
-    <button onclick="addToInput('-')">-</button>
-    <button onclick="addToInput('*')">*</button>
-    <button onclick="addToInput('/')">/</button><br>
-    <button onclick="calculate()">Вычислить</button>
-  
+    <header></header>
+    <main>
+        <section class="wrapper grid">
+            <input class="gridScreen" type="text" id="output" readonly></input>
+            <button id="one">1</button>
+            <button id="two">2</button>
+            <button id="three">3</button>
+            <button id="four">4</button>
+            <button id="five">5</button>
+            <button id="six">6</button>
+            <button id="seven">7</button>
+            <button id="eight">8</button>
+            <button id="nine">9</button>
+            <button class="gridArea" id="multiple" >*</button>
+            <button class="gridArea" id="divide">/</button>
+            <button id="zero">0</button>
+            <button class="gridArea" id="minus">-</button>
+            <button class="gridArea" id="plus">+</button>
+            <button class="gridArea" id="leftParenthesis">(</button>
+            <button id="clean">Очистить</button>
+            <button id="equal">Вычислить</button>
+            <button class="gridArea" id="rightParenthesis">)</button>
+        </section>
+    </main>
+    <footer></footer>
     <script>
-        function addToInput(value) {
-            document.getElementById('inputField').value += value;
-        }
+        
+    const output = document.getElementById('output');
+    const buttons = document.querySelectorAll('button');
 
-        function clearInput() {
-            document.getElementById('inputField').value = '';
-        }
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            if (button.textContent.includes('Очистить')) {
+                output.value = '';
+            } else if (button.textContent.includes('Вычислить')) {
+                calculator()
+            } else {
+            output.value = (`${output.value} ${this.textContent}`)
+            }
+        });
+    }); 
 
-        function calculate() {
-            var input = document.getElementById('inputField').value;
-            fetch('calculate.php', {
-                method: 'POST',
-                body: JSON.stringify({expression: input}),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(response => response.json())
-            .then(data => {
-                document.getElementById('inputField').value = data.result;
-            });
-        }
+    function calculator(){
+        fetch('calculate.php', {
+        method: 'POST',
+        body: new URLSearchParams({ expression: output.value })
+    })
+    .then(response => response.text())
+    .then(result => output.value = result);
+    }
     </script>
 </body>
 </html>
