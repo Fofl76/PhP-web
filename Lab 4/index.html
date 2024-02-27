@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Калькулятор</title>
+</head>
+<body>
+    <input type="text" id="inputField" readonly><br>
+    <button onclick="clearInput()">C</button><br>
+    <button onclick="addToInput('7')">7</button>
+    <button onclick="addToInput('8')">8</button>
+    <button onclick="addToInput('9')">9</button><br>
+    <button onclick="addToInput('4')">4</button>
+    <button onclick="addToInput('5')">5</button>
+    <button onclick="addToInput('6')">6</button><br>
+    <button onclick="addToInput('1')">1</button>
+    <button onclick="addToInput('2')">2</button>
+    <button onclick="addToInput('3')">3</button><br>
+    <button onclick="addToInput('0')">0</button><br>
+    <button onclick="addToInput('(')"> ( </button>
+    <button onclick="addToInput(')')"> ) </button>
+    <button onclick="addToInput('+')">+</button>
+    <button onclick="addToInput('-')">-</button>
+    <button onclick="addToInput('*')">*</button>
+    <button onclick="addToInput('/')">/</button><br>
+    <button onclick="calculate()">Вычислить</button>
+  
+    <script>
+        function addToInput(value) {
+            document.getElementById('inputField').value += value;
+        }
+
+        function clearInput() {
+            document.getElementById('inputField').value = '';
+        }
+
+        function calculate() {
+            var input = document.getElementById('inputField').value;
+            fetch('calculate.php', {
+                method: 'POST',
+                body: JSON.stringify({expression: input}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.json())
+            .then(data => {
+                document.getElementById('inputField').value = data.result;
+            });
+        }
+    </script>
+</body>
+</html>
